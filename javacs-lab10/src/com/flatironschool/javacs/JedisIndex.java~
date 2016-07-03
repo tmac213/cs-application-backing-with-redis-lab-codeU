@@ -67,6 +67,7 @@ public class JedisIndex {
 	 * @return Set of URLs.
 	 */
 	public Set<String> getURLs(String term) {
+        // TODO
         String redisKey = urlSetKey(term);
 		return jedis.smembers(redisKey);
 	}
@@ -83,6 +84,7 @@ public class JedisIndex {
 	 * @return Map from URL to count.
 	 */
 	public Map<String, Integer> getCounts(String term) {
+        // TODO
         Map<String, Integer> ret = new HashMap<>();
         for (String url : getURLs(term)) {
             ret.put(url, getCount(url, term));
@@ -98,6 +100,7 @@ public class JedisIndex {
 	 * @return
 	 */
 	public Integer getCount(String url, String term) {
+        // TODO
         String redisKey = termCounterKey(url);
 		return Integer.parseInt(jedis.hget(redisKey, term));
 	}
@@ -122,6 +125,8 @@ public class JedisIndex {
         for (String term : tc.keySet()) {
             addURL(term, tc.getLabel(), trans);
             addCount(term, tc.get(term), tc.getLabel(), trans);
+            // TODO we've added to the term's urlset, now we need to 
+            // add the count for this term to the hash for the url
         }
         
         trans.exec();
